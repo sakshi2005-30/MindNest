@@ -2,9 +2,12 @@ import React from 'react'
 import {BrainCircuit} from "lucide-react"
 import { Link,useNavigate } from 'react-router-dom';
 import { Folder, Search, Link as LinkIcon } from "lucide-react";
+import { useState } from 'react';
+import AuthModal from './AuthModal';
 
 const LandingPage = () => {
-  const navigate=useNavigate()
+  const navigate=useNavigate();
+  const [authType,setAuthType]=useState(null);
   return (
     <div>
       {/* navbar */}
@@ -17,14 +20,14 @@ const LandingPage = () => {
 
           <div className="flex items-center gap-6">
             <button
-              onClick={() => navigate("/signin")}
+              onClick={() => setAuthType("login")}
               className="text-gray-600 hover:text-black transition cursor-pointer"
             >
               Login
             </button>
 
             <button
-              onClick={() => navigate("/signup")}
+              onClick={() => setAuthType("signup")}
               className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition cursor-pointer"
             >
               Register
@@ -48,19 +51,19 @@ const LandingPage = () => {
 
             {/* Buttons */}
             <div className="mt-8 flex justify-center gap-4">
-              <Link
-                to="/signup"
+              <button
+                onClick={() => setAuthType("signup")}
                 className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition"
               >
                 Get Started
-              </Link>
+              </button>
 
-              <Link
-                to="/signin"
+              <button
+                onClick={() => setAuthType("login")}
                 className="border border-gray-300 px-6 py-3 rounded-lg hover:bg-gray-100 transition"
               >
                 Sign In
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -117,6 +120,13 @@ const LandingPage = () => {
           </div>
         </footer>
       </div>
+      {authType && (
+        <AuthModal
+          type={authType}
+          onClose={() => setAuthType(null)}
+          setAuthType={setAuthType}
+        />
+      )}
     </div>
   );
 }

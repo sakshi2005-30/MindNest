@@ -5,8 +5,12 @@ import Home from "./pages/Home"
 import LandingPage from "./pages/LandingPage"
 import {Toaster} from "react-hot-toast"
 import { useAuthStore } from "./store/useAuthStore"
+import {useEffect} from "react";
 const App = () => {
-  const {user}=useAuthStore();
+  const {user,checkAuth}=useAuthStore();
+  useEffect(()=>{
+    checkAuth();
+  },[]);
   return (
     <div>
      
