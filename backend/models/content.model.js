@@ -19,4 +19,11 @@ const contentSchema=new mongoose.Schema({
         ref:"User"
     }
 })
-module.exports=mongoose.model("Content",contentSchema);
+const Content=mongoose.model("Content",contentSchema);
+
+const linkSchema=new mongoose.Schema({
+    hash:String,
+    userId:mongoose.Schema.Types.ObjectId
+})
+const Link=mongoose.model("Link",linkSchema);
+module.exports={Content,Link}

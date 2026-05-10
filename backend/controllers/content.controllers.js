@@ -1,4 +1,7 @@
-const Content = require("../models/content.model");
+const{ Content,Link} = require("../models/content.model");
+
+const User=require("../models/user.models")
+const random=require("randomstring");
 const addContent = async (req, res) => {
   try {
     const {title,link,description,contentType}=req.body;
@@ -53,12 +56,67 @@ const deleteContent = async (req, res) => {
 
 const shareContentLink = async (req, res) => {
   try {
-  } catch (err) {}
+    const {share}=req.body;
+    if(share){
+      const existingLink=await Link.findOne({userId:req.user.id});
+
+      if(existingLink){
+        return res.json({
+          hash:existingLink.hash
+        })
+      }
+
+      const hash=random.generate(10);
+      const createLink=await Link.create({
+        hash,
+        userId:req.user.id
+      })
+      res.status(201).json({
+        hash
+      })
+    }
+    else{
+      await Link.deleteOne({userId:req.user.id});
+      res.json({
+        message:"Removed Link"
+      })
+    }
+  } 
+  catch (err) {
+    console.log("error in creating share link",err);
+    res.json({
+      message:"Server error"
+    })
+  }
 };
 
 const getSharedContentLink = async (req, res) => {
   try {
-  } catch (err) {}
+    const hash=req.params.shareLink;
+    const link=await Link.findOne({hash});
+    if(!link){
+      return res.status(404).json({
+        message:"Invalid share link"
+      })
+    }
+    const content=await Content.find({userId:link.userId})
+    const user=await User.findOne({_id:link.userId});
+    if(!user){
+      return res.status(400).json({
+        message:"User not found"
+      })
+    }
+    res.status(200).json({
+      username:user.username,
+      content
+    })
+
+  } catch (err) {
+     console.log("error in creating share link", err);
+     res.json({
+       message: "Server error",
+     });
+  }
 };
 
-module.exports={addContent,getContent,deleteContent}
+module.exports={addContent,getContent,deleteContent,shareContentLink,getSharedContentLink}
