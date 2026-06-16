@@ -1,15 +1,15 @@
-import React from 'react'
-import {useState} from "react"
+import React from "react";
+import { useState } from "react";
 import { GoUpload } from "react-icons/go";
 import { FaPlus } from "react-icons/fa6";
 import { CiSearch } from "react-icons/ci";
-import AddcontentModal from '../modals/AddcontentModal';
-import SharebrainModal from '../modals/SharebrainModal';
-const Topbar = ({title}) => {
-  const [addcontent,setAddContent]=useState(false);
-  const [shareContent,setShareContent]=useState(false);
+import AddcontentModal from "../modals/AddcontentModal";
+import SharebrainModal from "../modals/SharebrainModal";
+const Topbar = ({ title }) => {
+  const [addcontent, setAddContent] = useState(false);
+  const [shareContent, setShareContent] = useState(false);
   return (
-    <div className="py-4 border border-gray-100 bg-white px-8">
+    <div className="fixed top-0 left-58 right-0 py-4 border border-gray-100 bg-white px-8 z-50 ">
       <div className="flex justify-between">
         {/* title */}
         <div className="font-serif font-bold text-lg">{title}</div>
@@ -24,21 +24,26 @@ const Topbar = ({title}) => {
         </div>
         {/* buttons */}
         <div className="flex gap-4">
-          <div className="flex gap-2 border border-gray-200 rounded-lg items-center px-4 py-2 text-sm cursor-pointer hover:-translate-y-1 transition-all duration-200 hover:bg-primary-light hover:text-primary hover:border-primary" onClick={()=>setShareContent(true)}>
+          <div
+            className="flex gap-2 border border-gray-200 rounded-lg items-center px-4 py-2 text-sm cursor-pointer hover:-translate-y-1 transition-all duration-200 hover:bg-primary-light hover:text-primary hover:border-primary"
+            onClick={() => setShareContent(true)}
+          >
             <GoUpload className="size-3" />
             <p>Share brain</p>
           </div>
-          <div className="flex gap-2 bg-primary text-white font-medium rounded-lg px-4 py-2 text-sm items-center hover:-translate-y-1 transition-all duration-200 hover:shadow-[0_0_8px_var(--color-primary)] cursor-pointer" onClick={()=>setAddContent(true)}>
+          <div
+            className="flex gap-2 bg-primary text-white font-medium rounded-lg px-4 py-2 text-sm items-center hover:-translate-y-1 transition-all duration-200 hover:shadow-[0_0_8px_var(--color-primary)] cursor-pointer"
+            onClick={() => setAddContent(true)}
+          >
             <FaPlus className="size-3" />
             <p>Add content</p>
           </div>
         </div>
       </div>
-      
-        {addcontent &&<AddcontentModal onClose={()=>setAddContent(false)}/>}
-     
+
+      {addcontent && <AddcontentModal onClose={() => setAddContent(false)} />}
     </div>
   );
-}
+};
 
-export default Topbar
+export default Topbar;

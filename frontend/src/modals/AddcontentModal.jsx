@@ -1,19 +1,23 @@
 import React from 'react'
 import { useState ,useRef,useEffect} from 'react'
 import {Plus} from "lucide-react" 
-import { contentStore } from '../store/ContentStore'
+import { useContentStore } from '../store/ContentStore'
 const AddcontentModal = ({onClose}) => {
+
     const [form,setForm]=useState({
         title:"",
         description:"",
         link:"",
         contentType:"URL"
     })
-    const {create}=contentStore();
+    const {create,fetchContent}=useContentStore();
     const handleSubmit=async(e)=>{
       e.preventDefault();
       const res=await create(form);
-      onClose()
+    
+     
+      await fetchContent()
+      onClose();
     }
     const modalRef=useRef(null);
     const dropDownRef=useRef(null);
@@ -44,7 +48,7 @@ const AddcontentModal = ({onClose}) => {
       setContentTypeOpen(false)
     }
   return (
-    <div className="fixed inset-0 backdrop-blur-xs flex justify-center items-center px-4 bg-black/30 ">
+    <div className="z-50 fixed inset-0 backdrop-blur-xs flex justify-center items-center px-4 bg-black/30  ">
       <div
         className="bg-white flex flex-col gap-4  px-6 py-4 rounded-lg w-84 "
         ref={modalRef}
@@ -144,14 +148,14 @@ const AddcontentModal = ({onClose}) => {
           {/* buttons */}
           <div className="flex w-full gap-4">
             <button
-              className="w-full border border-gray-200 text-gray-400 text-sm rounded-lg hover:bg-primary-light hover:border-primary hover:text-primary px-4 py-2 cursor-pointer transition-all duration-200"
+              className="w-full border border-gray-200 text-gray-400  text-xs font-medium rounded-lg hover:bg-primary-light hover:border-primary hover:text-primary px-4 py-2 cursor-pointer transition-all duration-200"
               onClick={onClose}
               type="button"
             >
               Cancel
             </button>
             <button
-              className="w-full border  px-4 py-2 cursor-pointer bg-primary text-white font-medium rounded-lg text-sm hover:scale-105 transition-all duration-200"
+              className="w-full border  px-4 py-2 cursor-pointer bg-primary text-white font-medium rounded-lg text-xs hover:scale-105 transition-all duration-200"
               type="submit"
             >
               Save Content
